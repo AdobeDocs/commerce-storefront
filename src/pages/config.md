@@ -1,5 +1,5 @@
 - pathPrefix:
-    - /dev-docs-template/
+    - /commerce/storefront/
 
 - pages:
     - [Analytics](index.md)
