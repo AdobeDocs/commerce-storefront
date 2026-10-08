@@ -1,96 +1,88 @@
 ---
-title: Overview - Analytics
-description: This is the overview page of Analytics
-contributors:
-  - https://github.com/icaraps 
+title: Adobe Commerce Storefront
+description: Build the fastest storefronts on the web with Adobe Commerce, Edge Delivery Services, Commerce blocks, and Commerce drop-in components.
+hideBreadcrumbNav: true
+hideOnThisPage: true
+hideEditInGitHub: true
+hideLogIssue: true
+hideCopyMarkdown: true
 ---
 
-<Superhero slots="heading, text"/>
+<Cards variant="storefront-home" slots="heading, text, links, heading, links, heading, links" />
 
-# Analytics API
+# Create the fastest storefronts on the web
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eleifend ornare purus, vel dapibus augue suscipit in. 
+Learn to build Adobe Commerce storefronts using Edge Delivery Services, Commerce blocks, and Commerce drop-in components.
 
-<Resources slots="heading, links"/>
+- [Developers](https://experienceleague.adobe.com/en/tools/commerce-storefront/get-started/)
+- [Authors](https://experienceleague.adobe.com/en/tools/commerce-storefront/merchants/quick-start/)
+- [How-tos](https://experienceleague.adobe.com/en/tools/commerce-storefront/how-tos/)
+- [API Reference](https://experienceleague.adobe.com/en/tools/commerce-storefront/reference/)
+- [Releases](https://experienceleague.adobe.com/en/tools/commerce-storefront/releases/)
 
-#### Resources
+## [For developers](https://experienceleague.adobe.com/en/tools/commerce-storefront/get-started/)
 
-* [Quickstart Guide](https://developer.adobe.com)
-* [Analytics Github Repo](https://github.com/AdobeDocs/dev-site)
+- **[Getting started](https://experienceleague.adobe.com/en/tools/commerce-storefront/get-started/)**
+  - [Prerequisites](https://experienceleague.adobe.com/en/tools/commerce-storefront/get-started/before-you-start/)
+  - [Backend options](https://experienceleague.adobe.com/en/tools/commerce-storefront/get-started/backends/)
+  - [Install the AI tools](https://experienceleague.adobe.com/en/tools/commerce-storefront/ai/)
+  - [Create a storefront](https://experienceleague.adobe.com/en/tools/commerce-storefront/get-started/create-storefront/)
+- **[Architecture](https://experienceleague.adobe.com/en/tools/commerce-storefront/get-started/architecture/)**
+  - [How a page loads](https://experienceleague.adobe.com/en/tools/commerce-storefront/get-started/architecture/how-a-page-loads/)
+  - [Drop-ins at a glance](https://experienceleague.adobe.com/en/tools/commerce-storefront/get-started/architecture/drop-ins-at-a-glance/)
+  - [How drop-ins coordinate](https://experienceleague.adobe.com/en/tools/commerce-storefront/get-started/architecture/drop-ins-on-a-page/)
+  - [Commerce services at a glance](https://experienceleague.adobe.com/en/tools/commerce-storefront/get-started/architecture/commerce-services-and-backends/)
+- **[Blocks](https://experienceleague.adobe.com/en/tools/commerce-storefront/blocks/)**
+  - [Blocks and drop-ins](https://experienceleague.adobe.com/en/tools/commerce-storefront/blocks/blocks-and-dropins/)
+  - [Customize blocks](https://experienceleague.adobe.com/en/tools/commerce-storefront/blocks/customize-blocks/)
+  - [Create commerce blocks](https://experienceleague.adobe.com/en/tools/commerce-storefront/blocks/create-commerce-blocks/)
+  - [Build commerce features](https://experienceleague.adobe.com/en/tools/commerce-storefront/blocks/build-custom-features/)
+- **[Drop-ins](https://experienceleague.adobe.com/en/tools/commerce-storefront/dropins/all/introduction/)**
+  - [Drop-in containers](https://experienceleague.adobe.com/en/tools/commerce-storefront/dropins/all/containers/)
+  - [Container slots](https://experienceleague.adobe.com/en/tools/commerce-storefront/dropins/all/slots/)
+  - [Extend a drop-in](https://experienceleague.adobe.com/en/tools/commerce-storefront/dropins/all/extending/)
+  - [Event bus](https://experienceleague.adobe.com/en/tools/commerce-storefront/dropins/all/events/)
+- **[Configuration](https://experienceleague.adobe.com/en/tools/commerce-storefront/setup/configuration/)**
+  - [Storefront configuration](https://experienceleague.adobe.com/en/tools/commerce-storefront/setup/configuration/commerce-configuration/)
+  - [Compatibility Package](https://experienceleague.adobe.com/en/tools/commerce-storefront/setup/configuration/storefront-compatibility/)
+  - [CORS setup](https://experienceleague.adobe.com/en/tools/commerce-storefront/setup/configuration/cors-setup/)
+  - [Multistore setup](https://experienceleague.adobe.com/en/tools/commerce-storefront/setup/configuration/multistore-setup/)
+- **[Production](https://experienceleague.adobe.com/en/tools/commerce-storefront/setup/launch/)**
+  - [Launch checklist](https://experienceleague.adobe.com/en/tools/commerce-storefront/setup/launch/launch-checklist/)
+  - [Performance best practices](https://experienceleague.adobe.com/en/tools/commerce-storefront/get-started/performance/)
+  - [Analytics instrumentation](https://experienceleague.adobe.com/en/tools/commerce-storefront/setup/analytics/instrumentation/)
+  - [SEO overview](https://experienceleague.adobe.com/en/tools/commerce-storefront/setup/seo/)
 
-## Overview
+## [For authors](https://experienceleague.adobe.com/en/tools/commerce-storefront/merchants/quick-start/)
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eleifend ornare purus, vel dapibus augue suscipit in. Nam blandit vitae ante et auctor. Donec placerat egestas posuere. Aliquam erat volutpat. In condimentum massa eu pharetra porta. Nunc tempus massa sit amet nisl posuere sagittis. Mauris sit amet rhoncus neque. Phasellus ut vulputate est, vel auctor metus.
-
-Donec tincidunt turpis in congue vulputate. Suspendisse potenti. Phasellus feugiat eros sem, tristique sollicitudin lacus consectetur id. Cras tortor orci, venenatis ac vulputate sit amet, auctor sed ex. Ut vel convallis felis. Etiam luctus, diam sed venenatis tincidunt, ipsum turpis volutpat eros, nec interdum arcu mi molestie dolor. Donec id mauris sed odio mollis viverra sed lobortis quam. Aliquam mi metus, ultricies sagittis hendrerit eget, volutpat vel dui. Proin id urna hendrerit, scelerisque arcu sit amet, egestas neque. Sed fringilla odio tincidunt sapien malesuada facilisis.
-
-## Discover
-
-<DiscoverBlock width="100%" slots="heading, link, text"/>
-
-### Get Started
-
-[Quickstart Guide](guides/index.md)
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eleifend ornare purus, vel dapibus augue suscipit in. Nam blandit vitae ante et auctor. Donec placerat egestas posuere. Aliquam erat volutpat. In condimentum massa eu pharetra porta. Nunc tempus massa sit amet nisl posuere sagittis. Mauris sit amet rhoncus neque. Phasellus ut vulputate est, vel auctor metus.
-
-Donec tincidunt turpis in congue vulputate. Suspendisse potenti. Phasellus feugiat eros sem, tristique sollicitudin lacus consectetur id. Cras tortor orci, venenatis ac vulputate sit amet, auctor sed ex. Ut vel convallis felis. Etiam luctus, diam sed venenatis tincidunt, ipsum turpis volutpat eros, nec interdum arcu mi molestie dolor. Donec id mauris sed odio mollis viverra sed lobortis quam. Aliquam mi metus, ultricies sagittis hendrerit eget, volutpat vel dui. Proin id urna hendrerit, scelerisque arcu sit amet, egestas neque. Sed fringilla odio tincidunt sapien malesuada facilisis.
-
-
-<DiscoverBlock slots="heading, link, text"/>
-
-### Guides
-
-[Calculated Metrics API](guides/dummy_metrics_api/index.md)
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eleifend ornare purus, vel dapibus augue suscipit in. Nam blandit vitae ante et auctor. Donec placerat egestas posuere. Aliquam erat volutpat. In condimentum massa eu pharetra porta. Nunc tempus massa sit amet nisl posuere sagittis. Mauris sit amet rhoncus neque. Phasellus ut vulputate est, vel auctor metus.
-
-Donec tincidunt turpis in congue vulputate. Suspendisse potenti. Phasellus feugiat eros sem, tristique sollicitudin lacus consectetur id. Cras tortor orci, venenatis ac vulputate sit amet, auctor sed ex. Ut vel convallis felis. Etiam luctus, diam sed venenatis tincidunt, ipsum turpis volutpat eros, nec interdum arcu mi molestie dolor. Donec id mauris sed odio mollis viverra sed lobortis quam. Aliquam mi metus, ultricies sagittis hendrerit eget, volutpat vel dui. Proin id urna hendrerit, scelerisque arcu sit amet, egestas neque. Sed fringilla odio tincidunt sapien malesuada facilisis.
-
-
-<DiscoverBlock slots="link, text"/>
-
-[Segments API](guides/dummy_oauth_client/index.md)
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eleifend ornare purus, vel dapibus augue suscipit in. Nam blandit vitae ante et auctor. Donec placerat egestas posuere. Aliquam erat volutpat. In condimentum massa eu pharetra porta. Nunc tempus massa sit amet nisl posuere sagittis. Mauris sit amet rhoncus neque. Phasellus ut vulputate est, vel auctor metus.
-
-Donec tincidunt turpis in congue vulputate. Suspendisse potenti. Phasellus feugiat eros sem, tristique sollicitudin lacus consectetur id. Cras tortor orci, venenatis ac vulputate sit amet, auctor sed ex. Ut vel convallis felis. Etiam luctus, diam sed venenatis tincidunt, ipsum turpis volutpat eros, nec interdum arcu mi molestie dolor. Donec id mauris sed odio mollis viverra sed lobortis quam. Aliquam mi metus, ultricies sagittis hendrerit eget, volutpat vel dui. Proin id urna hendrerit, scelerisque arcu sit amet, egestas neque. Sed fringilla odio tincidunt sapien malesuada facilisis.
-
-<DiscoverBlock slots="link, text"/>
-
-[Reporting Guide API](guides/dummy_using_postman/index.md)
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eleifend ornare purus, vel dapibus augue suscipit in. Nam blandit vitae ante et auctor. Donec placerat egestas posuere. Aliquam erat volutpat. In condimentum massa eu pharetra porta. Nunc tempus massa sit amet nisl posuere sagittis. Mauris sit amet rhoncus neque. Phasellus ut vulputate est, vel auctor metus.
-
-Donec tincidunt turpis in congue vulputate. Suspendisse potenti. Phasellus feugiat eros sem, tristique sollicitudin lacus consectetur id. Cras tortor orci, venenatis ac vulputate sit amet, auctor sed ex. Ut vel convallis felis. Etiam luctus, diam sed venenatis tincidunt, ipsum turpis volutpat eros, nec interdum arcu mi molestie dolor. Donec id mauris sed odio mollis viverra sed lobortis quam. Aliquam mi metus, ultricies sagittis hendrerit eget, volutpat vel dui. Proin id urna hendrerit, scelerisque arcu sit amet, egestas neque. Sed fringilla odio tincidunt sapien malesuada facilisis.
-
-<DiscoverBlock slots="link, text"/>
-
-[Migrating from 1.4 to 2.0](guides/migrating/index.md)
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eleifend ornare purus, vel dapibus augue suscipit in. Nam blandit vitae ante et auctor. Donec placerat egestas posuere. Aliquam erat volutpat. In condimentum massa eu pharetra porta. Nunc tempus massa sit amet nisl posuere sagittis. Mauris sit amet rhoncus neque. Phasellus ut vulputate est, vel auctor metus.
-
-Donec tincidunt turpis in congue vulputate. Suspendisse potenti. Phasellus feugiat eros sem, tristique sollicitudin lacus consectetur id. Cras tortor orci, venenatis ac vulputate sit amet, auctor sed ex. Ut vel convallis felis. Etiam luctus, diam sed venenatis tincidunt, ipsum turpis volutpat eros, nec interdum arcu mi molestie dolor. Donec id mauris sed odio mollis viverra sed lobortis quam. Aliquam mi metus, ultricies sagittis hendrerit eget, volutpat vel dui. Proin id urna hendrerit, scelerisque arcu sit amet, egestas neque. Sed fringilla odio tincidunt sapien malesuada facilisis.
-
-<DiscoverBlock width="100%" slots="heading, link, text"/>
-
-### API References
-
-[Try the API](api/index.md)
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eleifend ornare purus, vel dapibus augue suscipit in. Nam blandit vitae ante et auctor. Donec placerat egestas posuere. Aliquam erat volutpat. In condimentum massa eu pharetra porta. Nunc tempus massa sit amet nisl posuere sagittis. Mauris sit amet rhoncus neque. Phasellus ut vulputate est, vel auctor metus.
-
-Donec tincidunt turpis in congue vulputate. Suspendisse potenti. Phasellus feugiat eros sem, tristique sollicitudin lacus consectetur id. Cras tortor orci, venenatis ac vulputate sit amet, auctor sed ex. Ut vel convallis felis. Etiam luctus, diam sed venenatis tincidunt, ipsum turpis volutpat eros, nec interdum arcu mi molestie dolor. Donec id mauris sed odio mollis viverra sed lobortis quam. Aliquam mi metus, ultricies sagittis hendrerit eget, volutpat vel dui. Proin id urna hendrerit, scelerisque arcu sit amet, egestas neque. Sed fringilla odio tincidunt sapien malesuada facilisis.
-
-## Contributing
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eleifend ornare purus, vel dapibus augue suscipit in. Nam blandit vitae ante et auctor. Donec placerat egestas posuere. Aliquam erat volutpat. In condimentum massa eu pharetra porta. Nunc tempus massa sit amet nisl posuere sagittis. Mauris sit amet rhoncus neque. Phasellus ut vulputate est, vel auctor metus.
-
-Donec tincidunt turpis in congue vulputate. Suspendisse potenti. Phasellus feugiat eros sem, tristique sollicitudin lacus consectetur id. Cras tortor orci, venenatis ac vulputate sit amet, auctor sed ex. Ut vel convallis felis. Etiam luctus, diam sed venenatis tincidunt, ipsum turpis volutpat eros, nec interdum arcu mi molestie dolor. Donec id mauris sed odio mollis viverra sed lobortis quam. Aliquam mi metus, ultricies sagittis hendrerit eget, volutpat vel dui. Proin id urna hendrerit, scelerisque arcu sit amet, egestas neque. Sed fringilla odio tincidunt sapien malesuada facilisis.
-
-
-## API Requests & Rate Limits
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eleifend ornare purus, vel dapibus augue suscipit in. Nam blandit vitae ante et auctor. Donec placerat egestas posuere. Aliquam erat volutpat. In condimentum massa eu pharetra porta. Nunc tempus massa sit amet nisl posuere sagittis. Mauris sit amet rhoncus neque. Phasellus ut vulputate est, vel auctor metus.
-
-Donec tincidunt turpis in congue vulputate. Suspendisse potenti. Phasellus feugiat eros sem, tristique sollicitudin lacus consectetur id. Cras tortor orci, venenatis ac vulputate sit amet, auctor sed ex. Ut vel convallis felis. Etiam luctus, diam sed venenatis tincidunt, ipsum turpis volutpat eros, nec interdum arcu mi molestie dolor. Donec id mauris sed odio mollis viverra sed lobortis quam. Aliquam mi metus, ultricies sagittis hendrerit eget, volutpat vel dui. Proin id urna hendrerit, scelerisque arcu sit amet, egestas neque. Sed fringilla odio tincidunt sapien malesuada facilisis.
+- **[Getting started](https://experienceleague.adobe.com/en/tools/commerce-storefront/merchants/quick-start/)**
+  - [What is a storefront?](https://experienceleague.adobe.com/en/tools/commerce-storefront/merchants/quick-start/create-content/)
+  - [How a page comes together](https://experienceleague.adobe.com/en/tools/commerce-storefront/merchants/quick-start/content-model/)
+  - [Your first commerce page](https://experienceleague.adobe.com/en/tools/commerce-storefront/how-tos/create-commerce-page/)
+  - [Document Authoring](https://experienceleague.adobe.com/en/tools/commerce-storefront/merchants/quick-start/document-authoring/)
+- **[Authoring](https://experienceleague.adobe.com/en/tools/commerce-storefront/merchants/authoring/)**
+  - [Add a block to a page](https://experienceleague.adobe.com/en/tools/commerce-storefront/how-tos/add-block-to-page/)
+  - [Block table structure](https://experienceleague.adobe.com/en/tools/commerce-storefront/merchants/blocks/block-tables/)
+  - [Add page metadata](https://experienceleague.adobe.com/en/tools/commerce-storefront/how-tos/add-page-metadata/)
+  - [Labels and placeholders](https://experienceleague.adobe.com/en/tools/commerce-storefront/how-tos/change-labels-and-placeholders/)
+- **[B2C blocks](https://experienceleague.adobe.com/en/tools/commerce-storefront/merchants/blocks/b2c/)**
+  - [Product Details](https://experienceleague.adobe.com/en/tools/commerce-storefront/merchants/blocks/product-details/)
+  - [Product List Page](https://experienceleague.adobe.com/en/tools/commerce-storefront/merchants/blocks/product-list-page/)
+  - [Commerce Cart](https://experienceleague.adobe.com/en/tools/commerce-storefront/merchants/blocks/commerce-cart/)
+  - [Commerce Checkout](https://experienceleague.adobe.com/en/tools/commerce-storefront/merchants/blocks/commerce-checkout/)
+- **[B2B blocks](https://experienceleague.adobe.com/en/tools/commerce-storefront/merchants/blocks/b2b/)**
+  - [Company Profile](https://experienceleague.adobe.com/en/tools/commerce-storefront/merchants/blocks/commerce-company-profile/)
+  - [Company Purchase Orders](https://experienceleague.adobe.com/en/tools/commerce-storefront/merchants/blocks/commerce-b2b-po-company-purchase-orders/)
+  - [Negotiable Quote](https://experienceleague.adobe.com/en/tools/commerce-storefront/merchants/blocks/commerce-b2b-negotiable-quote/)
+  - [Requisition Lists](https://experienceleague.adobe.com/en/tools/commerce-storefront/merchants/blocks/commerce-b2b-requisition-list/)
+- **[Customization](https://experienceleague.adobe.com/en/tools/commerce-storefront/merchants/content-customizations/)**
+  - [Show enrichment content](https://experienceleague.adobe.com/en/tools/commerce-storefront/how-tos/show-enrichment-content/)
+  - [Create a page experiment](https://experienceleague.adobe.com/en/tools/commerce-storefront/how-tos/create-page-experiment/)
+  - [Show targeted content](https://experienceleague.adobe.com/en/tools/commerce-storefront/how-tos/show-targeted-content/)
+  - [Product recommendations](https://experienceleague.adobe.com/en/tools/commerce-storefront/how-tos/add-product-recommendations/)
+- **[Publishing](https://experienceleague.adobe.com/en/tools/commerce-storefront/merchants/edge-delivery-services/)**
+  - [Scheduling options](https://experienceleague.adobe.com/en/tools/commerce-storefront/merchants/edge-delivery-services/scheduling/)
+  - [Translate content](https://experienceleague.adobe.com/en/tools/commerce-storefront/how-tos/translate-storefront-content/)
+  - [Redirects](https://experienceleague.adobe.com/en/tools/commerce-storefront/merchants/edge-delivery-services/redirects/)
+  - [Submit a sitemap](https://experienceleague.adobe.com/en/tools/commerce-storefront/how-tos/submit-storefront-sitemap/)
+                                   
