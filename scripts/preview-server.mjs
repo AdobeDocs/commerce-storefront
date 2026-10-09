@@ -1,4 +1,5 @@
 import { createServer } from 'node:http';
+import { readFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 
 function rewriteIcons(html) {
@@ -21,6 +22,16 @@ export function createPreviewServer({
   return createServer(async (request, response) => {
     try {
       const url = new URL(request.url, 'http://localhost');
+      if (url.pathname === '/commerce/storefront/blocks/blocks.json') {
+        const body = await readFile(new URL('../static/blocks/blocks.json', import.meta.url));
+        response.writeHead(200, {
+          'content-type': 'application/json',
+          'cache-control': 'no-cache',
+          'content-length': body.length,
+        });
+        response.end(request.method === 'HEAD' ? undefined : body);
+        return;
+      }
       const isDocumentation = url.pathname === '/commerce/storefront'
         || url.pathname.startsWith('/commerce/storefront/');
       const upstream = new URL(`${url.pathname}${url.search}`, isDocumentation ? connectorOrigin : assetsOrigin);

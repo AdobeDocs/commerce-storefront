@@ -55,6 +55,25 @@ test('injects the shared runtime and preserves icons inside code', async () => {
   assert.equal(Number(response.headers.get('content-length')), Buffer.byteLength(html));
 });
 
+test('serves the static block manifest for GET and HEAD requests', async () => {
+  const url = `${origin}/commerce/storefront/blocks/blocks.json?version=1`;
+  const response = await fetch(url);
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get('content-type'), 'application/json');
+  assert.equal(response.headers.get('cache-control'), 'no-cache');
+  assert.deepEqual(await response.json(), {
+    storefronthome: {
+      js: 'storefronthome/storefronthome.js',
+      css: 'storefronthome/storefronthome.css',
+    },
+  });
+  const head = await fetch(url, { method: 'HEAD' });
+  assert.equal(head.status, 200);
+  assert.equal(head.headers.get('content-type'), 'application/json');
+  assert.equal(head.headers.get('content-length'), response.headers.get('content-length'));
+  assert.equal(await head.text(), '');
+});
+
 test('preserves binary fonts and removes stale compression headers', async () => {
   const response = await fetch(`${origin}/commerce/storefront/blocks/fonts/Black.otf`);
   assert.deepEqual(Buffer.from(await response.arrayBuffer()), font);

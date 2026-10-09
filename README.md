@@ -27,12 +27,13 @@ Its seven slots consume one heading, one description, the primary link list,
 and a heading plus nested category list for each audience.
 
 The assets live under `src/pages/blocks/storefronthome/`, with their paths
-registered in `src/pages/blocks/blocks.json`. The homepage opts in with
+registered in `static/blocks/blocks.json`. The homepage opts in with
 `projectBlocks: blocks/project-blocks.js` in its frontmatter. This points to
 the project-owned resolver, not the JSON manifest. The resolver reads the
 manifest once and returns registered block assets. Asset paths resolve relative
 to the manifest and must remain on the same origin within this project's path
-prefix. Unregistered blocks continue using the shared renderer.
+prefix. Unregistered blocks continue using the shared renderer. The preview proxy
+serves the static manifest at `/commerce/storefront/blocks/blocks.json`.
 
 Deploy the companion `adp-devsite` project-block loader and
 `devsite-runtime-connector` metadata and asset content-type support before
@@ -55,7 +56,7 @@ The hook validates the loader and returned assets against the same origin,
 the page's `pathprefix`, and the expected file extensions.
 
 Maintain the resolver, its manifest, block implementation, fonts, and tests in
-this repository. Register additional blocks in `src/pages/blocks/blocks.json`
+this repository. Register additional blocks in `static/blocks/blocks.json`
 and opt in each page using the same `projectBlocks` frontmatter. No per-block
 change to `adp-devsite` is required. Resolver and shared-hook contract tests
 are included in `npm run test:blocks` and use the sibling `adp-devsite` runtime.
