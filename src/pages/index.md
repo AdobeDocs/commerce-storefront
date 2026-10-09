@@ -6,9 +6,10 @@ hideOnThisPage: true
 hideEditInGitHub: true
 hideLogIssue: true
 hideCopyMarkdown: true
+projectBlocks: blocks/project-blocks.js
 ---
 
-<Cards variant="storefront-home" slots="heading, text, links, heading, links, heading, links" />
+<StorefrontHome slots="heading, text, links, heading, links, heading, links" />
 
 # Create the fastest storefronts on the web
 

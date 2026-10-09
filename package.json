@@ -12,6 +12,8 @@
   "scripts": {
     "dev": "npx --yes --prefer-online github:AdobeDocs/adp-devsite-utils dev",
     "preview": "node scripts/preview.mjs",
+    "test:blocks": "playwright test test/blocks --workers=1",
+    "test:preview": "node --test test/preview-server.test.mjs",
     "buildNavigation": "npx --yes --prefer-online github:AdobeDocs/adp-devsite-utils buildNavigation -v",
     "buildRedirections": "npx --yes --prefer-online github:AdobeDocs/adp-devsite-utils buildRedirections -v",
     "renameFiles": "npx --yes --prefer-online github:AdobeDocs/adp-devsite-utils renameFiles -v",
@@ -27,6 +29,7 @@
     "redirectCheck:prod": "npx --yes --prefer-online github:AdobeDocs/adp-devsite-utils redirectChecker prod --verbose"
   },
   "devDependencies": {
+    "@playwright/test": "1.62.1",
     "concurrently": "9.1.2"
   }
 }

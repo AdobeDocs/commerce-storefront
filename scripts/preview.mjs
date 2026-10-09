@@ -12,7 +12,7 @@ const services = [
   { name: 'content', cwd: root, port: 3003, command: 'npm run dev' },
   { name: 'connector', cwd: resolve(root, '../devsite-runtime-connector'), port: 3002, command: 'npm run dev' },
   { name: 'assets', cwd: resolve(root, '../adp-devsite'), port: 3001, command: 'npm run dev:aem' },
-  { name: 'frontend', cwd: resolve(root, '../adp-devsite'), port: 3000, command: 'node dev.mjs' },
+  { name: 'frontend', cwd: root, port: 3000, command: 'node scripts/preview-server.mjs' },
 ];
 
 function isListening(port) {
