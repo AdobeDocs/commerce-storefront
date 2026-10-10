@@ -1,0 +1,6 @@
+{
+  "storefronthome": {
+    "js": "storefronthome/storefronthome.js",
+    "css": "storefronthome/storefronthome.css"
+  }
+}
