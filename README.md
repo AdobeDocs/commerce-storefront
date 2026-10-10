@@ -23,8 +23,75 @@ and lint workflows, license, and repository contribution policies are retained.
 
 The homepage uses the project-owned `StorefrontHome` component to render
 the introduction, navigation shortcuts, search, and developer/author grids.
-Its seven slots consume one heading, one description, the primary link list,
-and a heading plus nested category list for each audience.
+Its fixed `heading` slot takes the first included section heading. The renderer reads
+the following ordinary Markdown document, finding sections and fields by name.
+It stops at another page section or an unrelated block.
+
+Edit all page copy and links in [src/pages/index.md](src/pages/index.md).
+Use `##` for the five sections and `###` for category headings. Hyphens are only
+needed for actual link lists; no asterisks or nested structural lists are required.
+
+| Section | What It Controls |
+| --- | --- |
+| Hero | The small label, headline, blue highlight, and introductory paragraph |
+| Shortcuts | The row of navigation buttons |
+| Search | The search field's label and placeholder |
+| Developers | The developer directory, shown first on mobile |
+| Authors | The author directory, shown below developers on mobile |
+
+All five sections are optional. To omit an area, delete its `##` heading and
+everything beneath it up to the next `##` heading. For example, removing
+`## Search` and its `Label:` paragraph removes the homepage search form; the
+site header's search remains available. No JavaScript or CSS edits are needed.
+With one audience, the directory fills the available width without a divider.
+With neither audience, no directory is rendered. Omitted areas leave no empty
+containers. Keep at least one section when using `StorefrontHome`.
+
+An included section must still be complete: Hero needs `Eyebrow`, `Headline`,
+and `Description`; Search needs a nonempty `Label`; Shortcuts needs links;
+and each audience needs a `Heading` plus category headings with nonempty link
+lists. Empty or malformed included sections leave the source content untouched
+rather than rendering a partial page.
+
+To change text, edit the words after the colon. Keep the section names and field
+labels unchanged. `Highlight` is optional; omit it for a single-color headline.
+Write each field as a separate paragraph, with a blank line between fields.
+
+```markdown
+## Hero
+
+Eyebrow: Documentation
+
+Headline: Create the fastest
+
+Highlight: storefronts on the web
+
+Description: Learn to build Adobe Commerce storefronts.
+
+## Developers
+
+Heading: [For developers](https://experienceleague.adobe.com/en/tools/commerce-storefront/get-started/)
+
+### Getting started
+
+- [Prerequisites](https://experienceleague.adobe.com/en/tools/commerce-storefront/get-started/before-you-start/)
+```
+
+To change a link, edit `[visible text](URL)`. To add a category, add a `###`
+heading followed by a link list. Category titles can be plain words or links.
+To add a link, add another `- [visible text](URL)` line to that list. Keep the
+frontmatter and `<StorefrontHome slots="heading" />` setup unchanged, with
+the first included section's `##` heading immediately after the component marker.
+
+Edit the main layout in `PAGE_TEMPLATE` in
+[src/pages/blocks/storefronthome/storefronthome.js](src/pages/blocks/storefronthome/storefronthome.js),
+and styling in
+[src/pages/blocks/storefronthome/storefronthome.css](src/pages/blocks/storefronthome/storefronthome.css).
+
+The shared linter's fixed component allowlist does not include `StorefrontHome`.
+[package.json](package.json) scopes a `no-html-tags` exception to
+[src/pages/index.md](src/pages/index.md). This disables HTML-tag validation for
+that page only; all other lint rules and pages remain checked.
 
 The assets live under `src/pages/blocks/storefronthome/`, with their paths
 registered in `static/blocks/blocks.json`. The homepage opts in with
@@ -44,6 +111,65 @@ Search opens the existing devsite search dialog with the submitted query.
 Run `npm run test:blocks` to test the project-owned block.
 After installing dependencies for the first time, run
 `npx playwright install chromium --only-shell` to install its test browser.
+
+### CSS Selector Map
+
+Markdown supplies the content, but CSS targets the HTML produced by
+[storefronthome.js](src/pages/blocks/storefronthome/storefronthome.js).
+`PAGE_TEMPLATE` defines the main structure; `renderPage` and `createAudience`
+add the headline, shortcuts, audience sections, and categories. The
+`storefront-home__` classes are project-owned names, not Markdown keywords.
+
+The selectors below identify elements. Keep the existing stylesheet's `main`
+and `.storefronthome` prefixes when editing rules so changes stay scoped to
+this page and can override shared DevDocs styles.
+
+| Page Element | Selector | What to Style |
+| --- | --- | --- |
+| Entire homepage block | `.storefronthome` | Shared color variables and text defaults |
+| Hero band | `.storefront-home__hero` | Background, padding, and alignment |
+| Small label above the headline | `.storefront-home__eyebrow` | Color, uppercase text, and spacing |
+| Main headline | `.storefront-home__title` | Font size, weight, line height, and maximum width |
+| Optional highlighted headline text | `.storefront-home__highlight` | Highlight color and separate-line display |
+| Introductory paragraph | `.storefront-home__description` | Readable width, font size, and balanced wrapping |
+| Shortcut row | `.storefront-home__shortcuts` | Flex layout, wrapping, and gaps |
+| Individual shortcut link | `.storefront-home__shortcut` | Button-like appearance and hover state |
+| Shortcut and search icons | `.storefront-home__icon` | Icon dimensions and alignment |
+| Search form | `.storefront-home__search` | Width, border, background, and focus outline |
+| Search label | `.storefront-home__search-label` | Visually hidden accessible label; do not use `display: none` |
+| Search controls | `.storefront-home__search input`, `.storefront-home__search button` | Control sizing, padding, and typography |
+| Developer and author directory | `.storefront-home__directory` | Audience columns, maximum width, and outer spacing |
+| One audience section | `.storefront-home__audience` | Section sizing and divider between audiences |
+| Audience heading | `.storefront-home__audience-title` | Heading typography and spacing |
+| Categories within an audience | `.storefront-home__category-grid` | Category columns and gaps |
+| One category | `.storefront-home__category` | Scope for its list, list items, and links |
+| Category heading | `.storefront-home__category-title` | Heading typography and linked-title appearance |
+
+DevDocs also adds surrounding HTML that is not in `PAGE_TEMPLATE`. These
+selectors handle integration with its default page layout:
+
+| Selector | Purpose |
+| --- | --- |
+| `main.storefront-home-page` | Page-level styling scope added by the renderer |
+| `main.dev-docs.storefront-home-page.no-sidenav.no-aside > .section.grid-main-area` | Remove the shared width limit and side padding for the full-width hero |
+| `.storefronthome-wrapper` | Remove shared block-wrapper padding and fill the available width |
+| `main.storefront-home-page .content-header.no-breadcrumbs:not(:has(a, button))` | Hide the empty content header without hiding one that contains links or buttons |
+
+### Styling Workflow
+
+1. Start with a reference design or an explicit visual goal. HTML tells you
+  what exists; it does not prescribe colors, spacing, or font sizes.
+2. Open the local preview in a browser and inspect the element in DevTools.
+  Use **Styles** to find matching and overridden rules, and **Computed** to
+  see the final values. Inspect parent wrappers when width or padding seems wrong.
+3. Try a small change in DevTools, then apply it to the existing rule in
+  [storefronthome.css](src/pages/blocks/storefronthome/storefronthome.css).
+  DevTools experiments are temporary and do not update the file.
+4. Check wide and narrow screens, long text, hover, and keyboard focus.
+  At widths of 760px or less, audiences stack; at 480px or less, categories
+  also become a single column. Keep focus indicators and accessible labels intact.
+5. Run `npm run test:blocks` after stylesheet changes to check the existing
+  behavior and layout coverage. Browser inspection is still needed for visual changes.
 
 ## Project-Owned Loader Contract
 

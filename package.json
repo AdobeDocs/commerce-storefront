@@ -9,6 +9,13 @@
   "engines": {
     "node": "^24.11.0"
   },
+  "lint": {
+    "skipRules": {
+      "no-html-tags": {
+        "paths": ["src/pages/index.md"]
+      }
+    }
+  },
   "scripts": {
     "dev": "npx --yes --prefer-online github:AdobeDocs/adp-devsite-utils dev",
     "preview": "node scripts/preview.mjs",

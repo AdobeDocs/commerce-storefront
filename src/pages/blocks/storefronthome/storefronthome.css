@@ -188,6 +188,10 @@ main.storefront-home-page .storefronthome .storefront-home__directory {
   box-sizing: border-box;
 }
 
+main.storefront-home-page .storefronthome .storefront-home__directory:has(> .storefront-home__audience:only-child) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 main .storefronthome .storefront-home__audience {
   min-width: 0;
 }
