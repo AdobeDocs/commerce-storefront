@@ -92,6 +92,11 @@ test('rejects manifests outside the project without fetching them', async ({ pag
 for (const js of [
   'https://example.com/home.js', '../../../home.js', '/other/home.js',
   '/commerce/storefront/blocks/%2fother/home.js', 'home.html',
+  '/commerce/storefront/blocks/%2ehome.js',
+  '/commerce/storefront/blocks/%5chome.js',
+  '/commerce/storefront/blocks/%2Fother/home.js',
+  '/commerce/storefront/blocks/%2Ehome.js',
+  '/commerce/storefront/blocks/%5Chome.js',
 ]) {
   test(`rejects invalid JavaScript asset ${js}`, async ({ page }) => {
     expect(await resolveResources(page, { js, css: 'home.css' })).toBeNull();

@@ -12,7 +12,7 @@
   "lint": {
     "skipRules": {
       "no-html-tags": {
-        "paths": ["src/pages/index.md"]
+        "paths": ["src/pages/index.md", "src/pages/test.md"]
       }
     }
   },

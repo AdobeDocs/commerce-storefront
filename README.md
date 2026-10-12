@@ -2,6 +2,9 @@
 
 Please see the [ADP Developer Site Documentation](https://developer-stage.adobe.com/dev-docs-reference/).
 
+For the authoring workflow, file structure, and required runtime entry point,
+see [Building a Project-Owned DevDocs Block](BLOCK_DEVELOPMENT.md).
+
 ## Migration Source
 
 Content is being migrated from

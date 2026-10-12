@@ -23,6 +23,10 @@ before(async () => {
     } else if (request.url.endsWith('missing.js')) {
       response.writeHead(404);
       response.end('missing');
+    } else if (request.url.startsWith('/commerce/storefront/blocks/storefronthome/')) {
+      const type = request.url.includes('.css') ? 'text/css' : 'text/javascript';
+      response.writeHead(200, { 'content-type': type });
+      response.end(`project:${request.url}`);
     } else {
       response.writeHead(200, { 'content-type': 'text/html' });
       response.end('<html><head></head><body>:search:<pre>:search:</pre></body></html>');
@@ -86,6 +90,27 @@ test('forwards shared assets and query strings to the asset service', async () =
   const response = await fetch(`${origin}/hlx_statics/scripts/scripts.js?version=1`);
   assert.equal(await response.text(), 'shared:/hlx_statics/scripts/scripts.js?version=1');
   assert.equal(response.headers.get('content-type'), 'text/javascript');
+});
+
+test('routes registered project block assets requested by the shared runtime', async () => {
+  for (const [file, type] of [['storefronthome.js', 'text/javascript'], ['storefronthome.css', 'text/css']]) {
+    const url = `${origin}/hlx_statics/blocks/storefronthome/${file}?version=1`;
+    const response = await fetch(url);
+    assert.equal(response.status, 200);
+    assert.equal(await response.text(), `project:/commerce/storefront/blocks/storefronthome/${file}?version=1`);
+    assert.equal(response.headers.get('content-type'), type);
+    const head = await fetch(url, { method: 'HEAD' });
+    assert.equal(head.status, 200);
+    assert.equal(head.headers.get('content-type'), type);
+    assert.equal(await head.text(), '');
+  }
+  const response = await fetch(`${origin}/hlx_statics/blocks/storefronthome/fonts/AdobeClean-Black.otf`);
+  assert.deepEqual(Buffer.from(await response.arrayBuffer()), font);
+});
+
+test('keeps unregistered blocks on the shared asset service', async () => {
+  const response = await fetch(`${origin}/hlx_statics/blocks/header/header.js`);
+  assert.equal(await response.text(), 'shared:/hlx_statics/blocks/header/header.js');
 });
 
 test('preserves upstream error status', async () => {

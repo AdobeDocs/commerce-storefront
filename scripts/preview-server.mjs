@@ -32,6 +32,13 @@ export function createPreviewServer({
         response.end(request.method === 'HEAD' ? undefined : body);
         return;
       }
+      const sharedBlock = url.pathname.match(/^\/hlx_statics\/blocks\/([a-z0-9][a-z0-9-]*)\//);
+      if (sharedBlock) {
+        const manifest = JSON.parse(await readFile(new URL('../static/blocks/blocks.json', import.meta.url), 'utf8'));
+        if (Object.hasOwn(manifest, sharedBlock[1])) {
+          url.pathname = url.pathname.replace('/hlx_statics/', '/commerce/storefront/');
+        }
+      }
       const isDocumentation = url.pathname === '/commerce/storefront'
         || url.pathname.startsWith('/commerce/storefront/');
       const upstream = new URL(`${url.pathname}${url.search}`, isDocumentation ? connectorOrigin : assetsOrigin);
