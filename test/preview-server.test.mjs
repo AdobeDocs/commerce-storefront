@@ -7,6 +7,7 @@ import { createPreviewServer } from '../scripts/preview-server.mjs';
 const font = Buffer.from([79, 84, 84, 79, 0, 255, 128, 1]);
 let connector;
 let assets;
+let sharedContent;
 let preview;
 let origin;
 
@@ -33,15 +34,33 @@ before(async () => {
     }
   });
   assets = createServer((request, response) => {
+    if (request.url === '/franklin_assets/local-map.json') {
+      response.writeHead(200, { 'content-type': 'application/json' });
+      response.end('{"source":"local"}');
+      return;
+    }
+    if (request.url.startsWith('/franklin_assets/')) {
+      response.writeHead(404);
+      response.end('missing shared content');
+      return;
+    }
     response.writeHead(200, { 'content-type': 'text/javascript' });
     response.end(`shared:${request.url}`);
   });
-  preview = createPreviewServer({ connectorOrigin: await listen(connector), assetsOrigin: await listen(assets) });
+  sharedContent = createServer((request, response) => {
+    response.writeHead(200, { 'content-type': 'application/json' });
+    response.end(`published:${request.url}`);
+  });
+  preview = createPreviewServer({
+    connectorOrigin: await listen(connector),
+    assetsOrigin: await listen(assets),
+    sharedContentOrigin: await listen(sharedContent),
+  });
   origin = await listen(preview);
 });
 
 after(async () => {
-  for (const server of [preview, connector, assets]) {
+  for (const server of [preview, connector, assets, sharedContent]) {
     server.closeAllConnections();
     await new Promise((resolve) => server.close(resolve));
   }
@@ -117,4 +136,22 @@ test('preserves upstream error status', async () => {
   const response = await fetch(`${origin}/commerce/storefront/blocks/missing.js`);
   assert.equal(response.status, 404);
   assert.equal(await response.text(), 'missing');
+});
+
+test('uses published shared content when the local asset server is missing the search product map', async () => {
+  const url = `${origin}/franklin_assets/product-index-map.json?version=1`;
+  const response = await fetch(url);
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get('content-type'), 'application/json');
+  assert.equal(await response.text(), 'published:/franklin_assets/product-index-map.json?version=1');
+  const head = await fetch(url, { method: 'HEAD' });
+  assert.equal(head.status, 200);
+  assert.equal(head.headers.get('content-type'), 'application/json');
+  assert.equal(await head.text(), '');
+});
+
+test('keeps available shared content on the local asset service', async () => {
+  const response = await fetch(`${origin}/franklin_assets/local-map.json`);
+  assert.equal(response.status, 200);
+  assert.deepEqual(await response.json(), { source: 'local' });
 });

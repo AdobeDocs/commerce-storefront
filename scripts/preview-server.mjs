@@ -55,6 +55,7 @@ async function resolveProjectBlockPath(pathname) {
 export function createPreviewServer({
   connectorOrigin = 'http://127.0.0.1:3002',
   assetsOrigin = 'http://127.0.0.1:3001',
+  sharedContentOrigin = 'https://main--adp-devsite--adobedocs.aem.page',
 } = {}) {
   return createServer(async (request, response) => {
     try {
@@ -78,11 +79,19 @@ export function createPreviewServer({
       const isDocumentation = pathname === PROJECT_PATH || pathname.startsWith(`${PROJECT_PATH}/`);
       const upstreamOrigin = isDocumentation ? connectorOrigin : assetsOrigin;
       const upstream = new URL(`${pathname}${url.search}`, upstreamOrigin);
-      const result = await fetch(upstream, {
+      const requestOptions = {
         method: isHeadRequest ? 'HEAD' : 'GET',
         redirect: 'manual',
         signal: AbortSignal.timeout(10000),
-      });
+      };
+      let result = await fetch(upstream, requestOptions);
+
+      // AEM's local server may lack shared content such as the product map required by header search.
+      if (pathname.startsWith('/franklin_assets/') && result.status === 404) {
+        await result.body?.cancel();
+        const publishedContent = new URL(`${pathname}${url.search}`, sharedContentOrigin);
+        result = await fetch(publishedContent, requestOptions);
+      }
       const headers = Object.fromEntries(result.headers);
 
       // Connection headers cannot be forwarded. Fetch decompresses the body, and HTML edits change its length.
