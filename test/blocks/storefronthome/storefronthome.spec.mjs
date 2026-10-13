@@ -94,17 +94,62 @@ test('preserves the headline and creates five icon shortcuts', async ({ page }) 
   await expect(page.locator('.storefront-home__shortcut img')).toHaveCount(5);
 });
 
-test('opens native search with the submitted query', async ({ page }) => {
-  await page.locator('header button').evaluate((button) => {
-    button.addEventListener('click', () => { button.dataset.opened = 'true'; });
+for (const submission of ['keyboard', 'button']) {
+  test(`submits native search with the homepage query via ${submission}`, async ({ page }) => {
+    await page.locator('header button').evaluate((button) => {
+      button.addEventListener('click', () => { button.dataset.opened = 'true'; });
+    });
+    await page.locator('#search-input').evaluate((input) => {
+      input.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') input.dataset.submittedQuery = input.value;
+      });
+    });
+    await decorateFixture(page);
+    await page.locator('.storefront-home__search input').fill('product details');
+    if (submission === 'keyboard') {
+      await page.locator('.storefront-home__search input').press('Enter');
+    } else {
+      await page.locator('.storefront-home__search button').click();
+    }
+    await expect(page.locator('header button')).toHaveAttribute('data-opened', 'true');
+    await expect(page.locator('#search-input')).toHaveValue('product details');
+    await expect(page.locator('#search-input')).toHaveAttribute('data-submitted-query', 'product details');
+    await expect(page.locator('#search-input')).toBeFocused();
   });
-  await decorateFixture(page);
-  await page.locator('.storefront-home__search input').fill('product details');
-  await page.locator('.storefront-home__search input').press('Enter');
-  await expect(page.locator('header button')).toHaveAttribute('data-opened', 'true');
-  await expect(page.locator('#search-input')).toHaveValue('product details');
-  await expect(page.locator('#search-input')).toBeFocused();
-});
+}
+
+for (const validationFails of [false, true]) {
+  test(`waits for native search initialization when index validation ${validationFails ? 'fails' : 'succeeds'}`, async ({ page }) => {
+    await page.locator('header button').evaluate((button) => {
+      window.adp_search = {
+        indicesValidationPromise: new Promise((resolve, reject) => {
+          window.finishSearchValidation = { resolve, reject };
+        }),
+      };
+      button.addEventListener('click', async () => {
+        try {
+          await window.adp_search.indicesValidationPromise;
+        } catch {
+          // Mirror the shared header's fallback when index validation fails.
+        }
+        const input = document.querySelector('#search-input');
+        input.addEventListener('keypress', (event) => {
+          if (event.key === 'Enter') input.dataset.submittedQuery = input.value;
+        });
+      });
+    });
+    await decorateFixture(page);
+    await page.locator('.storefront-home__search input').fill('product details');
+    await page.locator('.storefront-home__search input').press('Enter');
+    await expect(page.locator('#search-input')).not.toHaveAttribute('data-submitted-query', 'product details');
+    await page.evaluate((fails) => {
+      if (fails) window.finishSearchValidation.reject(new Error('Index validation failed'));
+      else window.finishSearchValidation.resolve();
+    }, validationFails);
+    await expect(page.locator('#search-input')).toHaveAttribute('data-submitted-query', 'product details');
+    await expect(page.locator('#search-input')).toBeFocused();
+  });
+}
 
 test('uses authored labels for the eyebrow and every search control', async ({ page }) => {
   await page.locator('[data-field="eyebrow"]').evaluate((field) => { field.textContent = 'Eyebrow: Commerce documentation'; });

@@ -39,8 +39,6 @@ Heading: [For developers](https://experienceleague.adobe.com/en/tools/commerce-s
 
 ### [Getting started](https://experienceleague.adobe.com/en/tools/commerce-storefront/get-started/)
 
-- See [Test page](test.md).
-
 - [Prerequisites](https://experienceleague.adobe.com/en/tools/commerce-storefront/get-started/before-you-start/)
 - [Backend options](https://experienceleague.adobe.com/en/tools/commerce-storefront/get-started/backends/)
 - [Install the AI tools](https://experienceleague.adobe.com/en/tools/commerce-storefront/ai/)

@@ -206,12 +206,19 @@ function connectSearch(page) {
   if (!form) return;
 
   const homepageInput = form.querySelector('input');
-  form.addEventListener('submit', (event) => {
+  form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     const headerSearchButton = document.querySelector('header .nav-dropdown-search');
     if (!headerSearchButton) return;
     headerSearchButton.click();
+
+    // The header registers its search handlers after asynchronous index validation.
+    try {
+      await window.adp_search?.indicesValidationPromise;
+    } catch {
+      // The header continues with available indices when validation fails.
+    }
 
     const headerSearchInput = document.querySelector('header #search-input');
     if (!headerSearchInput) return;
@@ -219,6 +226,14 @@ function connectSearch(page) {
     headerSearchInput.value = homepageInput.value;
     headerSearchInput.dispatchEvent(new Event('input', { bubbles: true }));
     headerSearchInput.focus();
+
+    // Input updates suggestions; the shared header runs the full search on Enter.
+    headerSearchInput.dispatchEvent(new KeyboardEvent('keypress', {
+      key: 'Enter',
+      code: 'Enter',
+      bubbles: true,
+      cancelable: true,
+    }));
   });
 }
 
