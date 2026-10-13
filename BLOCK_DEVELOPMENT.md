@@ -120,12 +120,14 @@ A minimal implementation for the one-paragraph example is:
 
 ```javascript
 export default function decorate(block) {
+  // Leave malformed author content untouched instead of rendering an empty callout.
   const contentCell = block.querySelector(':scope > div > div');
   if (!contentCell) return;
   if (!contentCell.textContent.trim()) return;
 
   const callout = document.createElement('aside');
   callout.className = 'callout__content';
+  // Move existing nodes so authored links and formatting survive the transformation.
   callout.append(...contentCell.childNodes);
 
   block.replaceChildren(callout);
@@ -225,8 +227,8 @@ its content or behavior requires it.
 
 ## Diagrams
 
-The first diagram summarizes the development process above. The second shows
-how the files and functions work together when the finished block loads.
+The overview diagram summarizes the development process above. The detailed
+diagrams separate block loading, content transformation, and user interaction.
 
 ### Big Picture
 
@@ -235,7 +237,12 @@ and CSS against that shared structure, register the files, then verify and
 document the block.
 
 ```mermaid
+%%{init: {"htmlLabels": false, "flowchart": {"diagramPadding": 16}}}%%
 flowchart TB
+  %% Explicit colors keep node labels readable when the Markdown viewer changes themes.
+  classDef default fill:#f3f7fc,stroke:#527fb4,color:#191b20;
+  linkStyle default stroke:steelblue;
+  
   goal["1. Define one job<br/>Reuse an existing block if it fits"]
   markdown["2. Define authoring<br/>Markdown + marker + required / optional content"]
   html["3. Define the output<br/>HTML elements + CSS class names"]
@@ -261,73 +268,108 @@ not another required framework file.
 
 ### Detailed StorefrontHome Process
 
-This diagram follows the current block implementation. Other blocks use the
-same runtime entry point but can have different helper functions and authoring
-contracts.
+Follow the block in three stages: load its files, transform the authored content,
+then respond to user interaction. Other blocks share the runtime entry point but
+can use different helpers and authoring contracts.
+
+#### 1. Load the Block
+
+The connector creates the initial HTML. The DevDocs runtime selects the block's
+files and calls its default export; authors do not call `decorate()` themselves.
 
 ```mermaid
+%%{init: {"htmlLabels": false, "flowchart": {"diagramPadding": 16}}}%%
 flowchart TB
-    subgraph framework["1. Connector and DevDocs runtime"]
-        page["index.md<br/>Frontmatter + marker + Markdown content"]
-        convert["Connector parses the page<br/>and reads the component marker"]
-        slots["Consume following top-level Markdown nodes<br/>Node count = slot count * repeat"]
-        initial["Create block HTML<br/>Rows and cells contain the consumed content"]
-        wrappers["DevDocs adds block metadata<br/>and content / heading wrappers"]
-        resolver["Load the page's project resolver<br/>Call its default export with the block name"]
-        manifest["Resolver reads static/blocks/blocks.json<br/>Return JS + CSS URLs, or shared-asset fallback"]
-        parallel["Start CSS loading and JS import in parallel"]
-        cssLoad["Load storefronthome.css"]
-        jsImport["Import storefronthome.js"]
-        entry["Call the block module's default export<br/>Our function: decorate(block)"]
+  %% Explicit colors keep node labels readable when the Markdown viewer changes themes.
+  classDef default fill:#f3f7fc,stroke:#527fb4,color:#191b20;
+  linkStyle default stroke:steelblue;
 
-        page --> convert --> slots --> initial --> wrappers
-        wrappers --> resolver --> manifest --> parallel
-        parallel --> cssLoad
-        parallel --> jsImport --> entry
-    end
+  page["index.md<br/>Frontmatter, marker, and Markdown"]
+  connector["Connector consumes the marker's slots<br/>Creates block rows and cells"]
+  wrappers["DevDocs adds metadata<br/>and content / heading wrappers"]
+  resolver["Call the project's resolver<br/>with the block name"]
+  resources["Read blocks/blocks.json<br/>Select project URLs or shared fallback"]
+  css["Load the selected CSS"]
+  javascript["Import the selected JavaScript"]
+  decorate["Call the module's default export<br/>StorefrontHome: decorate(block)"]
+  loaded["Wait for CSS and decoration<br/>Mark the block loaded"]
+  display["Browser applies matching CSS rules"]
 
-    subgraph implementation["2. Our StorefrontHome JavaScript"]
-        read["readContent(block)"]
-        parse["readSections: group recognized headings<br/>readFields: read Label: value paragraphs<br/>readAudience: read category headings and lists"]
-        valid{"Are included sections valid?"}
-        untouched["Return without changing the source HTML"]
-        prepare["renderPage(content)<br/>Parse PAGE_TEMPLATE into template.content"]
-        areas["Render each area<br/>renderHero / renderShortcuts<br/>renderSearch / renderDirectory"]
-        omitted{"Is the area omitted?"}
-        remove["Remove its unused template elements"]
-        populate["Fill text and move authored links<br/>createTag / createIcon / createAudience as needed"]
-        bind["connectSearch(page)<br/>Attach a submit handler only if Search exists"]
-        insert["block.replaceChildren(page)<br/>Insert the prepared HTML"]
-        cleanup["removeSourceContent(block, content)<br/>Remove consumed source and empty wrappers<br/>Keep nodes moved into the finished page"]
-        scope["Add page styling scope<br/>and analytics attribute"]
-
-        entry --> read --> parse --> valid
-        valid -- "No" --> untouched
-        valid -- "Yes" --> prepare --> areas --> omitted
-        omitted -- "Yes" --> remove --> bind
-        omitted -- "No" --> populate --> bind
-        bind --> insert --> cleanup --> scope
-    end
-
-    complete["Block's default-exported function finishes"]
-    loaded["DevDocs waits for CSS loading and decoration<br/>Then marks the block loaded"]
-    display["Browser displays the HTML<br/>CSS selectors match its class names"]
-    submit["Later: user submits homepage Search"]
-    header["Submit handler opens header Search<br/>Copies query, dispatches input, and focuses field"]
-
-    untouched --> complete
-    scope --> complete
-    complete --> loaded
-    cssLoad --> loaded
-    loaded --> display
-    display -. "only if Search is included" .-> submit
-    submit --> header
+  page --> connector --> wrappers --> resolver --> resources
+  %% CSS loading and JavaScript import start independently.
+  resources --> css --> loaded
+  resources --> javascript --> decorate --> loaded
+  loaded --> display
 ```
 
-The area decision repeats for the included and omitted areas; it is not a
-single all-or-nothing decision for the page. When Hero, Shortcuts, and Search
-are all absent, `renderPage` also removes the empty top band. With no audiences,
-it removes the directory; with one audience, CSS gives it the available width.
+The connector consumes `slot count * repeat` top-level Markdown nodes. In this
+block, the one `heading` slot supplies the first heading; `readContent` explicitly
+collects the nearby content after it. The manifest is authored in
+`static/blocks/blocks.json` and served at the project's public `blocks/blocks.json`
+URL.
+
+#### 2. Transform the Content
+
+`decorate(block)` reads and validates before changing the page. Missing sections
+are allowed; malformed included sections leave the original HTML intact.
+
+```mermaid
+%%{init: {"htmlLabels": false, "flowchart": {"diagramPadding": 16}}}%%
+flowchart TB
+  %% Explicit colors keep node labels readable when the Markdown viewer changes themes.
+  classDef default fill:#f3f7fc,stroke:#527fb4,color:#191b20;
+  linkStyle default stroke:steelblue;
+
+  read["readContent(block)<br/>Read sections, fields, and audiences"]
+  valid{"Are included sections valid?"}
+  untouched["Keep the source HTML untouched"]
+  prepare["renderPage(content)<br/>Create HTML from PAGE_TEMPLATE"]
+  areas["Populate included areas<br/>Remove omitted template areas"]
+  bind["connectSearch(page)<br/>Register a handler if Search exists"]
+  insert["block.replaceChildren(page)<br/>Insert the prepared HTML"]
+  cleanup["removeSourceContent(block, content)<br/>Remove consumed source and empty wrappers"]
+  scope["Add page styling scope<br/>and analytics attribute"]
+  complete["Return to the runtime"]
+
+  read --> valid
+  valid -- "No" --> untouched --> complete
+  %% Only validated content reaches the rendering and replacement steps.
+  valid -- "Yes" --> prepare --> areas --> bind --> insert --> cleanup --> scope --> complete
+```
+
+Use this helper map when following the JavaScript:
+
+| Helpers | Responsibility |
+| --- | --- |
+| `readSections`, `readFields`, `readAudience` | Group recognized headings and read authored values, categories, and links. |
+| `renderHero`, `renderShortcuts`, `renderSearch`, `renderDirectory` | Fill included areas and remove unused template elements. |
+| `createTag`, `createIcon`, `createAudience` | Create the elements needed by those renderers. |
+| `removeSourceContent` | Remove the consumed source while preserving nodes moved into the finished page. |
+
+Omission is decided separately for each area. When Hero, Shortcuts, and Search
+are all absent, `renderPage` removes the empty top band. With no audiences, it
+removes the directory; with one audience, CSS gives it the available width.
+
+#### 3. Handle Search Later
+
+Rendering only registers the submit handler. The handler runs later, when the
+user submits the homepage Search form, and reuses the site's header search.
+
+```mermaid
+%%{init: {"htmlLabels": false, "flowchart": {"diagramPadding": 16}}}%%
+flowchart LR
+  %% Explicit colors keep node labels readable when the Markdown viewer changes themes.
+  classDef default fill:#f3f7fc,stroke:#527fb4,color:#191b20;
+  linkStyle default stroke:steelblue;
+
+  submit["User submits homepage Search"]
+  open["Open header Search"]
+  query["Copy the query<br/>Dispatch an input event"]
+  focus["Focus the header search field"]
+
+  %% This interaction exists only when the authored Search section is included.
+  submit --> open --> query --> focus
+```
 
 Important distinctions:
 

@@ -2,6 +2,20 @@ import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 
+const PROJECT_PATH = '/commerce/storefront';
+const MANIFEST_PATH = `${PROJECT_PATH}/blocks/blocks.json`;
+const MANIFEST_FILE = new URL('../static/blocks/blocks.json', import.meta.url);
+const SHARED_RUNTIME_HTML = '<link rel="stylesheet" href="/hlx_statics/styles/styles.css">'
+  + '<script src="/hlx_statics/scripts/scripts.js" type="module"></script>';
+const UPSTREAM_HEADERS_TO_REMOVE = [
+  'connection', 'keep-alive', 'proxy-authenticate', 'proxy-authorization',
+  'te', 'trailer', 'transfer-encoding', 'upgrade', 'content-length', 'content-encoding',
+];
+
+/**
+ * Converts authored icon tokens to spans the shared runtime can render.
+ * Temporarily hides code examples so their literal tokens remain unchanged.
+ */
 function rewriteIcons(html) {
   const codeBlocks = [];
   let processed = html.replace(/<(code|pre)[^>]*>[\s\S]*?<\/\1>/gi, (match) => {
@@ -15,6 +29,29 @@ function rewriteIcons(html) {
   return processed.replace(/__CODE_BLOCK_(\d+)__/g, (_, index) => codeBlocks[index]);
 }
 
+/**
+ * Maps registered project blocks from shared-runtime URLs to connector paths.
+ * This keeps project-owned assets out of the shared asset lookup without affecting shared blocks.
+ */
+async function resolveProjectBlockPath(pathname) {
+  const sharedBlock = pathname.match(/^\/hlx_statics\/blocks\/([a-z0-9][a-z0-9-]*)\//);
+  if (!sharedBlock) {
+    return pathname;
+  }
+
+  // The shared runtime requests all blocks here. Only registered blocks belong to this project.
+  const manifest = JSON.parse(await readFile(MANIFEST_FILE, 'utf8'));
+  const blockName = sharedBlock[1];
+  if (!Object.hasOwn(manifest, blockName)) {
+    return pathname;
+  }
+  return pathname.replace('/hlx_statics/', `${PROJECT_PATH}/`);
+}
+
+/**
+ * Creates a proxy that serves connector content and shared AEM assets on one origin.
+ * Injects the browser runtime so locally rendered Markdown becomes a working preview.
+ */
 export function createPreviewServer({
   connectorOrigin = 'http://127.0.0.1:3002',
   assetsOrigin = 'http://127.0.0.1:3001',
@@ -22,50 +59,52 @@ export function createPreviewServer({
   return createServer(async (request, response) => {
     try {
       const url = new URL(request.url, 'http://localhost');
-      if (url.pathname === '/commerce/storefront/blocks/blocks.json') {
-        const body = await readFile(new URL('../static/blocks/blocks.json', import.meta.url));
+      const isHeadRequest = request.method === 'HEAD';
+
+      // The connector serves page files, but the manifest lives in static/.
+      if (url.pathname === MANIFEST_PATH) {
+        const body = await readFile(MANIFEST_FILE);
         response.writeHead(200, {
           'content-type': 'application/json',
           'cache-control': 'no-cache',
           'content-length': body.length,
         });
-        response.end(request.method === 'HEAD' ? undefined : body);
+        response.end(isHeadRequest ? undefined : body);
         return;
       }
-      const sharedBlock = url.pathname.match(/^\/hlx_statics\/blocks\/([a-z0-9][a-z0-9-]*)\//);
-      if (sharedBlock) {
-        const manifest = JSON.parse(await readFile(new URL('../static/blocks/blocks.json', import.meta.url), 'utf8'));
-        if (Object.hasOwn(manifest, sharedBlock[1])) {
-          url.pathname = url.pathname.replace('/hlx_statics/', '/commerce/storefront/');
-        }
-      }
-      const isDocumentation = url.pathname === '/commerce/storefront'
-        || url.pathname.startsWith('/commerce/storefront/');
-      const upstream = new URL(`${url.pathname}${url.search}`, isDocumentation ? connectorOrigin : assetsOrigin);
+
+      // Project content comes from the connector. Shared runtime assets come from AEM.
+      const pathname = await resolveProjectBlockPath(url.pathname);
+      const isDocumentation = pathname === PROJECT_PATH || pathname.startsWith(`${PROJECT_PATH}/`);
+      const upstreamOrigin = isDocumentation ? connectorOrigin : assetsOrigin;
+      const upstream = new URL(`${pathname}${url.search}`, upstreamOrigin);
       const result = await fetch(upstream, {
-        method: request.method === 'HEAD' ? 'HEAD' : 'GET',
+        method: isHeadRequest ? 'HEAD' : 'GET',
         redirect: 'manual',
         signal: AbortSignal.timeout(10000),
       });
       const headers = Object.fromEntries(result.headers);
-      for (const name of [
-        'connection', 'keep-alive', 'proxy-authenticate', 'proxy-authorization',
-        'te', 'trailer', 'transfer-encoding', 'upgrade', 'content-length', 'content-encoding',
-      ]) delete headers[name];
-      if (isDocumentation && !headers['cache-control']) headers['cache-control'] = 'no-cache';
 
+      // Connection headers cannot be forwarded. Fetch decompresses the body, and HTML edits change its length.
+      for (const name of UPSTREAM_HEADERS_TO_REMOVE) {
+        delete headers[name];
+      }
+      if (isDocumentation && !headers['cache-control']) {
+        headers['cache-control'] = 'no-cache';
+      }
+
+      // Keep fonts and other binary assets as bytes; only documentation HTML needs rewriting.
       let body = Buffer.from(await result.arrayBuffer());
       if (isDocumentation && headers['content-type']?.includes('text/html')) {
         const html = rewriteIcons(body.toString('utf8'));
-        body = Buffer.from(html.replace('</head>',
-          '<link rel="stylesheet" href="/hlx_statics/styles/styles.css">'
-          + '<script src="/hlx_statics/scripts/scripts.js" type="module"></script></head>'));
+        body = Buffer.from(html.replace('</head>', `${SHARED_RUNTIME_HTML}</head>`));
       }
-      if (request.method !== 'HEAD' && result.status !== 204 && result.status !== 304) {
+      const allowsBody = !isHeadRequest && result.status !== 204 && result.status !== 304;
+      if (allowsBody) {
         headers['content-length'] = String(body.length);
       }
       response.writeHead(result.status, headers);
-      response.end(request.method === 'HEAD' ? undefined : body);
+      response.end(isHeadRequest ? undefined : body);
     } catch (error) {
       response.writeHead(502, { 'content-type': 'text/plain; charset=utf-8' });
       response.end(`Preview upstream failed: ${error.message}`);
@@ -73,9 +112,10 @@ export function createPreviewServer({
   });
 }
 
+// Importing this module in tests must not start a listening server.
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const port = Number(process.env.DEV_PORT || 3000);
   createPreviewServer().listen(port, () => {
-    console.log(`Storefront preview: http://localhost:${port}/commerce/storefront/`);
+    console.log(`Storefront preview: http://localhost:${port}${PROJECT_PATH}/`);
   });
 }
