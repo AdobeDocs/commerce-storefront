@@ -1,0 +1,24 @@
+---
+title: API Reference
+description: API and component reference for Adobe Commerce storefront drop-ins, the B2B drop-in suite, and the Drop-In SDK.
+# hideBreadcrumbNav: true
+# hideOnThisPage: true
+# hideEditInGitHub: true
+# hideLogIssue: true
+# hideCopyMarkdown: true
+projectBlocks: blocks/project-blocks.js
+---
+
+# API Reference
+
+The reference sections document APIs, slots, functions, events, styles, and dictionaries for every drop-in and SDK utility. Use these pages when you are actively building or customizing drop-in behavior and need to look up specific inputs, outputs, or contracts.
+
+| Category | Selected links |
+| --- | --- |
+| [B2C drop-ins](/dropins/) | [Product Details Page](/dropins/product-details/), [Cart](/dropins/cart/), [Checkout](/dropins/checkout/), [User Account](/dropins/user-account/) |
+| [B2B drop-ins](/dropins-b2b/) | [Company Management](/dropins-b2b/company-management/), [Purchase Order](/dropins-b2b/purchase-order/), [Quote Management](/dropins-b2b/quote-management/), [Requisition List](/dropins-b2b/requisition-list/) |
+| [Storefront SDK](/sdk/) | [Components](/sdk/components/overview/), [Design](/sdk/design/), [Reference](/sdk/reference/), [Utilities](/sdk/utilities/) |
+| [Dropins AI tools](/reference/dropins-ai-tools/) | [Discovery tools](/reference/dropins-ai-tools/#discovery-tools), [Code generation tools](/reference/dropins-ai-tools/#code-generation-tools), [Health and upgrade tools](/reference/dropins-ai-tools/#health-and-upgrade-tools), [Documentation tools](/reference/dropins-ai-tools/#documentation-tools) |
+| [API playgrounds](/playgrounds/) | [Commerce API Playground](/playgrounds/commerce-services/), [Commerce Optimizer API Playground](/playgrounds/commerce-optimizer/), [GraphQL reference](/sdk/reference/graphql/), [Commerce services and backends](/get-started/architecture/commerce-services-and-backends/) |
+| [Compatibility Package archive](/reference/storefront-compatibility/) | [Adobe Commerce 2.4.8](/reference/storefront-compatibility/v248/), [Adobe Commerce 2.4.7](/reference/storefront-compatibility/v247/), [Compatibility Package](/setup/configuration/storefront-compatibility/), [Adobe Commerce 2.4.9](/setup/configuration/storefront-compatibility/v249/) |
+
