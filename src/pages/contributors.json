@@ -1,99 +1,31 @@
 {
-  "total": 13,
+  "total": 3,
   "offset": 0,
-  "limit": 13,
+  "limit": 3,
   "data": [
     {
       "page": "/",
       "avatars": [
+        "https://avatars.githubusercontent.com/u/1828494?v=4",
         "https://avatars.githubusercontent.com/u/14320591?v=4"
       ],
-      "lastUpdated": "10/2/2026"
-    },
-    {
-      "page": "/api/",
-      "avatars": [
-        "https://avatars.githubusercontent.com/u/14320591?v=4"
-      ],
-      "lastUpdated": "10/2/2026"
-    },
-    {
-      "page": "/api/1-4",
-      "avatars": [
-        "https://avatars.githubusercontent.com/u/14320591?v=4"
-      ],
-      "lastUpdated": "10/2/2026"
+      "lastUpdated": "10/10/2026"
     },
     {
       "page": "/config",
       "avatars": [
+        "https://avatars.githubusercontent.com/u/1828494?v=4",
         "https://avatars.githubusercontent.com/u/160927437?v=4",
         "https://avatars.githubusercontent.com/u/14320591?v=4"
       ],
-      "lastUpdated": "10/2/2026"
+      "lastUpdated": "10/8/2026"
     },
     {
-      "page": "/guides/",
+      "page": "/test",
       "avatars": [
-        "https://avatars.githubusercontent.com/u/14320591?v=4"
+        "https://avatars.githubusercontent.com/u/1828494?v=4"
       ],
-      "lastUpdated": "10/2/2026"
-    },
-    {
-      "page": "/guides/dummy_metrics_api/",
-      "avatars": [
-        "https://avatars.githubusercontent.com/u/14320591?v=4"
-      ],
-      "lastUpdated": "10/2/2026"
-    },
-    {
-      "page": "/guides/dummy_oauth_client/",
-      "avatars": [
-        "https://avatars.githubusercontent.com/u/14320591?v=4"
-      ],
-      "lastUpdated": "10/2/2026"
-    },
-    {
-      "page": "/guides/dummy_using_postman/",
-      "avatars": [
-        "https://avatars.githubusercontent.com/u/14320591?v=4"
-      ],
-      "lastUpdated": "10/2/2026"
-    },
-    {
-      "page": "/guides/migrating/",
-      "avatars": [
-        "https://avatars.githubusercontent.com/u/14320591?v=4"
-      ],
-      "lastUpdated": "10/2/2026"
-    },
-    {
-      "page": "/support/",
-      "avatars": [
-        "https://avatars.githubusercontent.com/u/14320591?v=4"
-      ],
-      "lastUpdated": "10/2/2026"
-    },
-    {
-      "page": "/support/community/",
-      "avatars": [
-        "https://avatars.githubusercontent.com/u/14320591?v=4"
-      ],
-      "lastUpdated": "10/2/2026"
-    },
-    {
-      "page": "/support/contribute/",
-      "avatars": [
-        "https://avatars.githubusercontent.com/u/14320591?v=4"
-      ],
-      "lastUpdated": "10/2/2026"
-    },
-    {
-      "page": "/support/FAQ/",
-      "avatars": [
-        "https://avatars.githubusercontent.com/u/14320591?v=4"
-      ],
-      "lastUpdated": "10/2/2026"
+      "lastUpdated": "10/10/2026"
     }
   ],
   ":type": "sheet"
