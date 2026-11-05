@@ -9,36 +9,25 @@ hideCopyMarkdown: true
 projectBlocks: blocks/project-blocks.js
 ---
 
-[API Reference](/api-reference/)
+<Superhero slots="icon,heading, text" />
 
+:check:
 
-<StorefrontHome slots="heading" />
+# Create the fastest storefronts on the web
 
-## Hero
-
-Eyebrow: Documentation
-
-Headline: Create the fastest
-
-Highlight: storefronts on the web
-
-Description: Learn to build Adobe Commerce storefronts using Edge Delivery Services, Commerce blocks, and Commerce drop-in components.
+Learn to build Adobe Commerce storefronts using Edge Delivery Services, Commerce blocks, and Commerce drop-in components.
 
 ## Shortcuts
 
-- [Developers](https://experienceleague.adobe.com/en/tools/commerce-storefront/get-started/)
+- [Developers](developers/getting-started.md)
 - [Authors](https://experienceleague.adobe.com/en/tools/commerce-storefront/merchants/quick-start/)
 - [How-tos](https://experienceleague.adobe.com/en/tools/commerce-storefront/how-tos/)
 - [API Reference](/api-reference/)
 - [Releases](https://experienceleague.adobe.com/en/tools/commerce-storefront/releases/)
 
-## Search
-
-Label: Search the documentation
-
 ## Developers
 
-Heading: [For developers](https://experienceleague.adobe.com/en/tools/commerce-storefront/get-started/)
+[External Site](https://example.com)
 
 ### [Getting started](https://experienceleague.adobe.com/en/tools/commerce-storefront/get-started/)
 
@@ -83,8 +72,6 @@ Heading: [For developers](https://experienceleague.adobe.com/en/tools/commerce-s
 - [SEO overview](https://experienceleague.adobe.com/en/tools/commerce-storefront/setup/seo/)
 
 ## Authors
-
-Heading: [For authors](https://experienceleague.adobe.com/en/tools/commerce-storefront/merchants/quick-start/)
 
 ### [Getting started](https://experienceleague.adobe.com/en/tools/commerce-storefront/merchants/quick-start/)
 

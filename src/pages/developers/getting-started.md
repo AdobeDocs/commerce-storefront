@@ -1,0 +1,81 @@
+---
+title: Getting started as a developer
+description: Create or join an Adobe Commerce storefront project, run a local preview, and start customizing its design and included shopping features.
+---
+
+import Diagram from '@components/Diagram.astro';
+import { Steps } from '@astrojs/starlight/components';
+
+# Getting started as a developer
+
+Welcome to storefront development. Every Adobe Commerce storefront begins with ready-made starter code. Product details, cart, checkout, and other shopping features are already included and integrated into Commerce blocks, so your work goes into making the storefront look and feel like your brand.
+
+## Where you work
+
+Your storefront brings together two kinds of work: code from developers and content from authors.
+
+![As a developer, you work in your favorite IDE to develop the storefront project, which begins
+with starter code. Authors work in Experience Workspace to edit the DA.live project, which begins
+with starter content. The storefront project supplies code to your storefront, and the DA.live
+project supplies content.](./images/developer-life.png)
+
+- **Favorite IDE:** Edit blocks, scripts, and styles with the tools you already use, then check each change in a local preview.
+- **Starter code:** The storefront boilerplate that every project begins from.
+- **Storefront project:** Your team's own Git repository. Make changes here, not in the starter code.
+- **Authors:** Edit pages in Experience Workspace. Their Document Authoring (DA.live) project begins with starter content, a set of sample pages.
+- **Your storefront:** The brand-specific shopping experience your customers see.
+
+## What's on a storefront page
+
+Every storefront page mixes default content (headings, text, images) with blocks, reusable pieces that render together in the browser. Shopping features arrive as drop-ins, each inside a Commerce block.
+
+![A storefront page running in the browser contains content blocks, such as accordions, cards,
+and columns, and Commerce blocks, such as product-details, commerce-cart, and commerce-checkout.
+Each Commerce block contains a drop-in, such as product details, cart, or checkout. Outside the
+page, drop-ins import the Storefront SDK and fetch Commerce data from Commerce
+APIs.](./images/developer-page-anatomy.png)
+
+- **Content blocks:** Editorial layouts, such as accordions, cards, and columns.
+- **Commerce blocks:** Hold a drop-in and place it on the page. For example, the `commerce-cart` block holds the cart drop-in.
+  - **Drop-ins:** Ready-made shopping features, such as product details, cart, and checkout.
+- **Storefront SDK:** Shared tools and UI primitives that drop-ins import. Your blocks can use them too.
+- **Commerce data:** Product, cart, and order information that drop-ins fetch from Commerce APIs.
+
+## Where your changes go
+
+Drop-ins and the Storefront SDK are npm packages installed into your project, so you don't edit their code directly. Your project uses them from three places.
+
+![Your storefront project, your team's Git repository, contains Commerce blocks in the blocks
+folder, initializers in the scripts/initializers folder, and styles in styles/styles.css. You
+change these. They use packages installed from npm: drop-ins and the Storefront SDK, which you
+don't edit. Drop-ins fetch Commerce data from your Commerce
+backend.](./images/developer-what-you-own.png)
+
+- **Commerce blocks:** Import a drop-in's containers and render them on the page, for example in `blocks/commerce-cart/commerce-cart.js`.
+- **Initializers:** Set up each drop-in, including its API endpoint and labels, for example in `scripts/initializers/cart.js`.
+- **Styles:** Define design tokens that drop-ins also use, such as `--color-brand-500` in `styles/styles.css`.
+
+[Blocks and drop-ins](/blocks/blocks-and-dropins/) shows how these files connect.
+
+## Create a new storefront
+
+Start with these steps if your team does not already have a storefront project. If it does, skip to [Run your storefront locally](/get-started/run-locally/).
+
+1. [Prerequisites](/get-started/before-you-start/): Gather the tools, accounts, and Commerce access you need.
+
+1. [Backend options](/get-started/backends/): Confirm the license and setup requirements for Adobe Commerce as a Cloud Service or Adobe Commerce Optimizer.
+
+1. [Create a storefront](/get-started/create-storefront/): Set up your project repository, Commerce connection, and starter content.
+
+1. [Run your storefront locally](/get-started/run-locally/): Open a local preview with your project's content and Commerce data.
+
+1. [Verify your storefront setup](/get-started/verify-setup/): Test the shopping features your project needs.
+
+Then try [Make your first change](/get-started/first-change/) to update a link color and see the result in your local preview.
+
+## More help on this topic
+
+- [Find your code](/boilerplate/#find-your-code): Locate the files for your change.
+- [Developer how-tos](/how-tos/#how-tos-for-developers): Find instructions for a specific change.
+- [Architecture](/get-started/architecture/): Follow how content, code, and Commerce data work together.
+- [Install the AI tools](/ai/): Set up tools for AI-assisted changes.
